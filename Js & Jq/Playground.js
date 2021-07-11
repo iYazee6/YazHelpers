@@ -1,3 +1,46 @@
+$(document).ready(function () {
+    
+    // AdminLTE: Select current page and remove href from it
+    try {
+        if (!this.location.pathname.includes('/404')) {
+            // Selecting the current page and openning treeview if there is one
+            $('a[href="' + this.location.pathname + '"]').addClass('active');
+            $('a[href="' + this.location.pathname + '"]').parents('.has-treeview').addClass('menu-open');
+            $('a[href="' + this.location.pathname + '"]').removeAttr('href');
+        }
+    } catch (e) { }
+    
+    
+    /* Using culture specified classes (Will just replace depending on the current language ~> (RTL/LTR)
+    for example we
+        <div class="float-culture"></div>
+     if (RTL) will be replaced to
+        <div class="float-left"></div>
+     else 
+        <div class="float-right"></div>
+    ...
+    */
+    try {
+        $(".cultureClass").addClass(getCultureLayout()).removeClass('cultureClass');
+        $(".float-culture").addClass((culture == "AR") ? 'float-left' : 'float-right').removeClass('float-culture');
+        $(".mx-culture").addClass((culture == "AR") ? 'mr-auto' : 'ml-auto').removeClass('mx-culture');
+        $(".text-culture").addClass((culture == "AR") ? 'text-right' : 'text-left').removeClass('text-culture');
+        $(".text-culture-inv").addClass((culture == "AR") ? 'text-left' : 'text-right').removeClass('text-culture');
+    } catch (e) { }
+    
+});
+
+// Simple (AR/EN) Culture Management from Cookies [_culture]
+var culture = 'AR';
+function setCulture() {
+    var match = document.cookie.match(new RegExp('(^| )' + '_culture' + '=([^;]+)'));
+    if (match && match[2] == 'en-US') { culture = 'EN'; }
+    else { culture = 'AR'; }
+}
+function getCultureLayout() {
+    if (culture == 'AR') { return 'left'; }
+    else { return 'right'; }
+}
 
 // JQ: Allows loading a script to the page
 // Just user $.loadScript('../Scripts/my-script.js', function() { console.log('Loaded'); });
